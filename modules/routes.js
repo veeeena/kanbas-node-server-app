@@ -1,5 +1,8 @@
 import db from "../Database/index.js";
 function ModuleRoutes(app) {
+    app.get("/api/modules", (req, res) => {
+        res.send(db.modules)
+    })
     app.delete("/api/modules/:mid", (req, res) => {
         const { mid } = req.params;
         db.modules = db.modules.filter((m) => m._id !== mid);
