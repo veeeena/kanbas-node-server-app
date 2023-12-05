@@ -3,8 +3,15 @@ import * as dao from "./dao.js";
 
 function UserRoutes(app) {
   const createUser = async (req, res) => {
-    const user = await dao.createUser(req.body);
-    res.json(user);
+    try {
+      const user = await dao.createUser(req.body);
+      res.json(user);  
+    } catch (err) {
+      console.log(err);
+      res.status(404)
+         .json({ message: `Unable to crate user` });
+      return;
+    }
    };
   const deleteUser = async (req, res) => {
     const status = await dao.deleteUser(req.params.userId);
@@ -20,15 +27,8 @@ function UserRoutes(app) {
    };
   const updateUser = async (req, res) => {
     const { userId } = req.params;
-    let status;
-    let currentUser;
-    try {
-      status = await dao.updateUser(userId, req.body);
-      currentUser = await dao.findUserById(userId);  
-    } catch (err) {
-      console.log(err);
-      return;
-    }
+    const status = await dao.updateUser(userId, req.body);
+    const currentUser = await dao.findUserById(userId);
     req.session['currentUser'] = currentUser;
     res.json(status);
   };
