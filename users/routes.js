@@ -20,8 +20,15 @@ function UserRoutes(app) {
    };
   const updateUser = async (req, res) => {
     const { userId } = req.params;
-    const status = await dao.updateUser(userId, req.body);
-    const currentUser = await dao.findUserById(userId);
+    let status;
+    let currentUser;
+    try {
+      status = await dao.updateUser(userId, req.body);
+      currentUser = await dao.findUserById(userId);  
+    } catch (err) {
+      console.log(err);
+      return;
+    }
     req.session['currentUser'] = currentUser;
     res.json(status);
   };
