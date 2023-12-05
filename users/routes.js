@@ -7,10 +7,8 @@ function UserRoutes(app) {
       const user = await dao.createUser(req.body);
       res.json(user);  
     } catch (err) {
-      console.log(err);
       res.status(404)
-         .json({ message: `Unable to crate user` });
-      return;
+         .json({ message: `Unable to create user` });
     }
    };
   const deleteUser = async (req, res) => {
